@@ -7,6 +7,6 @@
 #'   \item{id_ap_bio3}{unique internal id}
 #'   \item{especie}{Scientific name of the species}
 #'   \item{cod_nidificacao}{Atlas reproduction status code}
-#'   \item{utm}{UTM Grid Code of occurence}
+#'   \item{utm}{UTM Grid Code of bird occurence}
 #' }
 "atlas_aves"
