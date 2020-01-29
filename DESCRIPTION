@@ -1,0 +1,17 @@
+Package: tabulEIA
+Type: Package
+Title: Get complete available biodiversity data for a region of interest.
+Version: 0.1.0
+Authors@R: person("Paulo", "Cardoso", role=c("aut", "cre"),
+    email = "pcaulo.c@bioinsight.pt")
+Mantainer: Paulo Cardoso
+Description: Make it easy to compile biodiversity data from
+    different sources.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+Imports: 
+    sf (>= 0.6-0),
+    tidyverse (>= 1.1.1),
+    sp (>= 1.2-5)
