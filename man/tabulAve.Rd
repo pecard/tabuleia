@@ -4,34 +4,44 @@
 \alias{tabulAve}
 \title{Build report-ready table with all known bird occurences for a region of interest.}
 \usage{
-tabulAve(utm_ae = utm_ae, utm_q = utm_q, fielddata = NULL,
-  atlas = atlas)
+tabulAve(
+  utm_ae = utm_ae,
+  utm_q = utm_contig,
+  fielddata = NULL,
+  atlas = atlas_aves,
+  ebird = NULL,
+  gbif = NULL
+)
 }
 \arguments{
 \item{utm_ae}{character vector of utm grid cells touching roi.}
 
 \item{utm_q}{character vector of utm grid cells around roi}
 
-\item{fielddata}{a dataframe with bid data obtained for the roi. Tipically a table with species
+\item{fielddata}{a data.frame with bid data obtained for the roi. Tipically a table with species
 utm reference.}
 
-\item{atlas}{dataset with reference distribution data for a taxonomic group, like the Atlas das Aves.}
+\item{atlas}{data.frame with Mammal and Bat Atlas data with references to the UTM 10x10 grid cell.}
+
+\item{ebird}{data.frame with eBird Dataset from 2005 to 2019.}
+
+\item{gbif}{data.frame with GBIF Dataset from 2005 to 2019.}
 
 \item{ae}{any spatial (sp, spatialdataframe) or coordinates vector indicating a region
 of interest.}
 }
 \value{
-an Excel file with a complete and pre-formatted table,
-    ready for use on reports.
+an data.frame file with a complete and pre-formatted table,
+ready for use on reports.
 }
 \description{
 The \code{tabulAve} function will create a reference table (Excel file)
-    considering all bird species occuring in a roi, joining all relevant information
-    (taxonomic, conservation, occurence status and legal framework).
-    It will also summarize roi status (ratios for protected and threatened species).
+considering all bird species occuring in a roi, joining all relevant information
+(taxonomic, conservation, occurence status and legal framework).
+It will also summarize roi status (ratios for protected and threatened species).
 }
 \details{
-ensure that field data sheet follow the standardized formatting.
+ensure that field datasheet follow the standardized formatting.
 }
 \examples{
    # read roi from shapefile
@@ -44,8 +54,10 @@ ensure that field data sheet follow the standardized formatting.
    aeu$id = c(1:2)
    # get UTM codes for your roi
    utm_all = utm_id(grid = utm10k, roi = aeu \%>\% filter(id == 2), buff = NULL, contiguity = 'queen')
+   utm_ae <- utm_all$ae
+   utm_contig <- utm_all$contig
    # tabulate species occurence and status in the area
-   tave = tabulEIA::tabulAve(fielddata = NULL, utm_ae = utm_all$ae, utm_q = utm_all$contig, atlas = atlas_ave)
+   tave = tabulEIA::tabulAve(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, atlas = atlas_aves, ebird = ebird, gbif = gbif)
    # export to csv
 }
 \author{

@@ -35,8 +35,11 @@ will require the .prj otherwise identify it with the corresponding numeric epsg 
    # do not run
    # Read coodinates as organized for analysis of movements
    ae = "~path/to/roi/roi.shp"
-   # identify the UTM touching and those from vicinity using 'queen' criteria
+   # identify the UTM touching and those from queen vicinity
    utm_ae = utm_id(grid = utm, roi = ae, buff = 500, contiguity = 'queen')
+check projection supplied
+buffer roi
+Intersects
 }
 \author{
 Paulo E. Cardoso

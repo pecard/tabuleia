@@ -4,13 +4,15 @@
 \name{atlas_aves}
 \alias{atlas_aves}
 \title{Data from Atlas das Aves Nidificantes de Portugal Continental}
-\format{A data frame with 8 columns x 71111 rows:
+\format{
+A data frame with 8 columns x 71111 rows:
 \describe{
-  \item{id_ap_bio3}{unique internal id}
-  \item{especie}{Scientific name of the species}
-  \item{cod_nidificacao}{Atlas reproduction status code}
-  \item{utm}{UTM Grid Code of occurence}
-}}
+\item{id_ap_bio3}{unique internal id}
+\item{especie}{Scientific name of the species}
+\item{cod_nidificacao}{Atlas reproduction status code}
+\item{utm}{UTM Grid Code of bird occurence}
+}
+}
 \usage{
 atlas_aves
 }

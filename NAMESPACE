@@ -2,8 +2,11 @@
 
 export(ist_queen)
 export(ist_rook)
+export(partial_join)
 export(tabulAve)
-export(tabulFauna)
+export(tabulFlora)
+export(tabulHerp)
+export(tabulMam)
 export(utm_id)
 import(sf)
 import(sp)

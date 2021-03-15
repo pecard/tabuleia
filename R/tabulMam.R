@@ -1,0 +1,180 @@
+#' Build report-ready table with all known mammal occurences for a region of interest.
+#' @description The \code{tabulMam} function will create a reference table (Excel file)
+#'     considering all mammal species occuring in a region, joining all relevant information
+#'     (taxonomic, conservation, occurence status and legal framework).
+#'     It will also (in the future) summarize region status (ratios for protected and threatened species).
+#'
+#' @param ae sf object. any spatial (sp, spatialdataframe) or coordinates vector indicating a region
+#'     of interest.
+#'
+#' @param fielddata dataframe. Table with bid data obtained for the roi. Tipically a table with species
+#'     utm reference.
+#' @param atlas character. Mammal and Bat Atlas data with references to the UTM 10x10 grid cell.
+#'
+#' @param inat character. Use Inaturalist Dataset for 2018 and 2019 with thousands of entries available on iNaturalist database from 2018 and 2019.
+#'
+#' @param dhab character. Use Habitat Direective data from 2013-2018 report published by ICNF.
+#'
+#' @param marinhos Logical. False (default) exclude marine mammals. To include change to TRUE.
+#'
+#' @param utm_ae character. vector of utm grid cells touching roi.
+#'
+#' @param utm_q character. vector of utm grid cells around roi
+#'
+#' @return an Excel file with a complete and pre-formatted table,
+#'     (almost) ready for use on EIA reports.
+#'
+#' @details ensure that field datasheet follow the standardized formatting.
+#'
+#' @author Paulo E. Cardoso
+#'
+#' @import sf
+#' @import sp
+#' @import tidyverse
+#' @export
+#' @examples
+#'    # read roi from shapefile
+#'    ae = sf::read_sf(here::here('sig', 'ae_buffer250m.shp'),
+#'                     stringsAsFactors = F) %>%
+#'     st_set_crs(3763)
+#'    # Cast multipolygon geometry to single parts
+#'    aeu = st_cast(ae, "POLYGON")
+#'    # Add an UID to each
+#'    aeu$id = c(1:2)
+#'    # get UTM codes for your roi
+#'    utm_all = utm_id(grid = utm10k, roi = aeu %>% filter(id == 2), buff = NULL, contiguity = 'queen')
+#'    # tabulate species occurence and status in the area
+#'    tmam = tabulEIA::tabulMam(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, atlas = 'all', inat = FALSE)
+#'    # export to csv
+#     write_excel_csv(tmam, path=here::here('output', 'tab_mammals.csv'))
+tabulMam = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, marinhos = FALSE, atlas = 'all', dhab = dh13_18, inat = NULL){
+  # Field Data
+  if(is.null(fielddata)){
+    t_campo <- data.frame(
+      especie = character(),
+      utm = character(),
+      ocorr = numeric(),
+      origem = character(),
+      fonte = character(),
+      uid = character(),
+      stringsAsFactors = FALSE)
+  } else{
+    t_campo <- fielddata
+    t_campo <-
+      t_campo %>%
+      dplyr::select(especie, utm, uid) %>%
+      group_by(especie, utm) %>%
+      dplyr::distinct(especie, .keep_all = TRUE) %>%
+      dplyr::mutate(ocorr = 1,
+                    origem = 'campo',
+                    fonte = 'Campo') %>%
+      ungroup()
+  }
+  # Atlas
+  if(atlas == "all"){
+    t_atlasm <-
+      atlas_mam %>%
+      dplyr::select(especie, utm, uid) %>%
+      dplyr::filter(utm %in% c(utm_ae, utm_q)) %>%
+      dplyr::distinct(especie, utm, .keep_all = TRUE) %>%
+      dplyr::mutate(ocorr = 2, origem = 'Bencatel', fonte = 'Bibliografia')
+
+    # Quirop
+    t_atlasq <-
+      atlas_qui %>%
+      dplyr::select(especie, utm, uid) %>%
+      dplyr::filter(utm %in% c(utm_ae, utm_q)) %>%
+      dplyr::distinct(especie, utm, .keep_all = TRUE) %>%
+      dplyr::mutate(ocorr = 2, origem = 'ICNF', fonte = 'Bibliografia')
+
+    t_atlas <- dplyr::bind_rows(t_atlasm, t_atlasq)
+  } else{
+    t_atlas <- data.frame(
+      especie = character(),
+      utm = character(),
+      ocorr = numeric(),
+      origem = character(),
+      fonte = character(),
+      uid = character(),
+      stringsAsFactors = FALSE)
+  }
+
+  if(is.null(dhab)){
+    # diretiva habitats 2013-2018
+    t_dhab <- data.frame(
+      especie = character(),
+      utm = character(),
+      ocorr = numeric(),
+      origem = character(),
+      fonte = character(),
+      uid = character(),
+      stringsAsFactors=FALSE)
+  } else{
+    t_dhab <-
+      dhab %>%
+      dplyr::filter(grupo == "Mamíferos", utm %in% c(utm_ae, utm_q)) %>%
+      dplyr::select(especie, utm, uid) %>%
+      dplyr::distinct(especie, utm, .keep_all = TRUE) %>%
+      dplyr::mutate(ocorr = 3, origem = 'DH2013-2018', fonte = 'Bibliografia')
+  }
+
+  if(is.null(inat)){
+    # iNaturalist
+    t_inat <- data.frame(
+      especie = character(),
+      utm = character(),
+      ocorr = numeric(),
+      origem = character(),
+      fonte = character(),
+      uid = character(),
+      stringsAsFactors=FALSE)
+  } else{
+    t_inat <-
+      inat18_19 %>%
+      dplyr::select(especie, utm, uid) %>%
+      dplyr::filter(utm %in% c(utm_ae, utm_q)) %>%
+      dplyr::distinct(especie, utm, .keep_all = TRUE) %>%
+      dplyr::mutate(ocorr = 4, origem = 'iNat', fonte = 'Bibliografia')
+  }
+
+  # Bind all
+  tm <-
+    dplyr::bind_rows(t_campo, t_atlas, t_inat, t_dhab) %>%
+    dplyr::group_by(especie, utm) %>%
+    dplyr::filter(ocorr == min(ocorr)) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(ocorr_o = dplyr::case_when(ocorr == 1 & utm %in% utm_ae   ~ 'Confirmado (C)',
+                                             utm %in% utm_ae                ~ 'Confirmado (B)',
+                                             !utm %in% utm_ae               ~ 'Provável',
+                                             TRUE ~ 'REVER')) %>%
+    dplyr::mutate(ocorr_rank = dplyr::case_when(ocorr_o == 'Confirmado (C)' ~ 1,
+                                                ocorr_o == 'Confirmado (B)' ~ 2,
+                                                TRUE ~ 3)) %>%
+    dplyr::group_by(especie) %>%
+    arrange(ocorr_rank) %>% distinct(especie, .keep_all = TRUE) %>% dplyr::ungroup()
+
+  if(nrow(tm) == 0) stop('Cannot proceed. No data available for your Region')
+
+  #join with partial match
+  tm <- partial_join(tm,
+                     tab_ref %>%
+                       dplyr::select(grupo, familia,  especieRef = especie, nomecomum,
+                                     lvvp06_estatuto_continente, iucn20092_rl_estatuto, spec,
+                                     dl156a_2013_anexos, convencao_berna, convencao_bona,
+                                     lvvp06_endemismo,lvvp06_ocorr_continente,
+                                     uid),
+                     by_x = "uid", pattern_y = "uid") %>%
+    select(
+      Grupo = grupo, Familia=familia,  Especie = especieRef, Nome_comum = nomecomum,
+      LVVP_Portugal = lvvp06_estatuto_continente,
+      LVIUCN = iucn20092_rl_estatuto,
+      Estatuto_SPEC = spec,
+      dl156a_2013_anexos, convencao_berna, convencao_bona,
+      lvvp06_endemismo, Tipo_de_ocorrencia = lvvp06_ocorr_continente,
+      Ocorrencia_na_AE = ocorr_o
+    )
+  # Excluir Marinhos
+    if(marinhos == F) tm <- tm %>%  filter(!Familia %in% c('BALAENOPTERIDAE', 'DELPHINIDAE', 'PHOCOENIDAE','PHYSETERIDAE','ZIPHIIDAE','PHOCIDAE'))
+
+  return(tm)
+}

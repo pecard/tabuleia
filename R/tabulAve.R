@@ -7,25 +7,28 @@
 #' @param ae any spatial (sp, spatialdataframe) or coordinates vector indicating a region
 #'     of interest.
 #'
-#' @param fielddata a dataframe with bid data obtained for the roi. Tipically a table with species
+#' @param fielddata a data.frame with bid data obtained for the roi. Tipically a table with species
 #'     utm reference.
-#' @param atlas dataset with reference distribution data for a taxonomic group, like the Atlas das Aves.
+#' @param atlas data.frame with Mammal and Bat Atlas data with references to the UTM 10x10 grid cell.
+#'
+#' @param ebird data.frame with eBird Dataset from 2005 to 2019.
+#'
+#' @param gbif data.frame with GBIF Dataset from 2005 to 2019.
 #'
 #' @param utm_ae character vector of utm grid cells touching roi.
 #'
 #' @param utm_q character vector of utm grid cells around roi
 #'
-#' @return an Excel file with a complete and pre-formatted table,
+#' @return an data.frame file with a complete and pre-formatted table,
 #'     ready for use on reports.
 #'
-#' @details ensure that field data sheet follow the standardized formatting.
+#' @details ensure that field datasheet follow the standardized formatting.
 #'
 #' @author Paulo E. Cardoso
 #'
 #' @import sf
 #' @import sp
 #' @import tidyverse
-#' @import dplyr
 #' @export
 #' @examples
 #'    # read roi from shapefile
@@ -38,67 +41,124 @@
 #'    aeu$id = c(1:2)
 #'    # get UTM codes for your roi
 #'    utm_all = utm_id(grid = utm10k, roi = aeu %>% filter(id == 2), buff = NULL, contiguity = 'queen')
+#'    utm_ae <- utm_all$ae
+#'    utm_contig <- utm_all$contig
 #'    # tabulate species occurence and status in the area
-#'    tave = tabulEIA::tabulAve(fielddata = NULL, utm_ae = utm_all$ae, utm_q = utm_all$contig, atlas = atlas_ave)
+#'    tave = tabulEIA::tabulAve(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, atlas = atlas_aves, ebird = ebird, gbif = gbif)
 #'    # export to csv
 #     write_excel_csv(tave, path=here::here('output', 'tabela_avifauna_agolada.csv'))
-tabulAve = function(utm_ae = utm_ae$ae, utm_q = utm_ae$contig, fielddata = NULL, atlas=atlas){
+tabulAve <- function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, atlas = atlas_aves, ebird = NULL, gbif = NULL){
+  # Field Data
   if(is.null(fielddata)){
     t_campo <- data.frame(
-      gps=numeric(),
-      grupo=character(),
-      especie=character(),
-      nind=numeric(),
-      metodo=character(),
-      obs=character(),
-      utm=character(),
+      especie = character(),
+      utm = character(),
+      ocorr = numeric(),
+      origem = character(),
+      fonte = character(),
+      uid = character(),
       stringsAsFactors=FALSE)
-  } else t_campo = fielddata
-  tave = atlas_aves %>%
-    dplyr::select('especie', 'nidificacao', 'utm') %>%
+  } else t_campo <- fielddata
+  t_campo <-
+    t_campo %>%
+    #dplyr::filter(grupo == 'aves') %>%
+    dplyr::select('especie', 'utm', uid) %>%
+    dplyr::distinct(especie, .keep_all = TRUE) %>%
+    dplyr::mutate(ocorr = 1, origem = 'campo', fonte = 'Campo')
+
+  # Atlas
+  t_atlas <-
+    atlas %>%
+    dplyr::select('especie', 'cod_nidificacao', 'nidificacao', 'utm', uid) %>%
     dplyr::filter(utm %in% c(utm_ae, utm_q)) %>%
     dplyr::distinct(especie, utm, .keep_all = TRUE) %>%
-    dplyr::mutate(ocorr = 2, origem = 'atlas') %>%
-    dplyr::bind_rows(t_campo %>%
-                       dplyr::filter(grupo == 'aves') %>%
-                       dplyr::select('especie', 'utm') %>%
-                       dplyr::distinct(especie, .keep_all = TRUE) %>%
-                       dplyr::mutate(ocorr = 1, origem = 'campo')
-    ) %>%
-    dplyr::group_by(especie) %>%
+    dplyr::mutate(ocorr = 2, origem = 'atlas',
+                  fonte = 'Bibliografia')
+
+  # eBird
+  if(is.null(ebird)){
+    t_ebird <- data.frame(
+      especie = character(),
+      utm = character(),
+      ocorr = numeric(),
+      origem = character(),
+      fonte = character(),
+      uid = character(),
+      stringsAsFactors=FALSE)
+  } else t_ebird <-
+    ebird %>% filter(duration_minutes >=5,
+                     wcount == 2, # reduce to species with genus and specific name
+                     str_detect(scientific_name, pattern = '.sp', negate = T)) %>%
+    dplyr::select('especie'= scientific_name, 'utm' = UTM, uid) %>%
+    dplyr::filter(utm %in% c(utm_ae, utm_q)) %>%
+    dplyr::distinct(especie, utm, .keep_all = TRUE) %>%
+    dplyr::mutate(ocorr = 3, origem = 'ebird',
+                  fonte = 'Bibliografia')
+  # GBIF
+  if(is.null(gbif)){
+    t_gbif <- data.frame(
+      especie = character(),
+      utm = character(),
+      ocorr = numeric(),
+      origem = character(),
+      fonte = character(),
+      uid = character(),
+      stringsAsFactors=FALSE)
+  } else t_gbif <-
+    gbif %>% filter(class == 'Aves') %>%
+    dplyr::select('especie'= species, 'utm' = UTM, uid) %>%
+    dplyr::filter(utm %in% c(utm_ae, utm_q)) %>%
+    dplyr::distinct(especie, utm, .keep_all = TRUE) %>%
+    dplyr::mutate(ocorr = 4, origem = 'gbif',
+                  fonte = 'Bibliografia')
+
+  # Bind all
+  tm <-
+    dplyr::bind_rows(t_campo, t_atlas, t_ebird, t_gbif) %>%
+    dplyr::group_by(especie, utm) %>%
     dplyr::filter(ocorr == min(ocorr)) %>%
-    dplyr::mutate(nutm=n(), ocor_n=ocorr) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(ocorr = dplyr::case_when(ocorr == 1 & utm %in% utm_ae ~ 'Confirmado',
-                             ocorr == 2 & utm %in% utm_ae ~ 'Confirmado (b)',
-                             nutm >= 4 & !utm %in% utm_ae ~ 'Muito provavel',
-                             nutm >= 2 | nutm < 4 & !utm %in% utm_ae  ~ 'Provavel',
-                             nutm < 2 & !utm %in% utm_ae ~ 'Possivel',
-                             TRUE ~ 'Rever')) %>%
-    dplyr::mutate(ocor_n = dplyr::case_when(ocorr == 'Confirmado'     ~ 1,
-                              ocorr == 'Confirmado (b)' ~ 2,
-                              ocorr == 'Muito provavel' ~ 3,
-                              ocorr == 'Provavel'       ~ 4,
-                              ocorr == 'Possivel'       ~ 5,
-                              TRUE ~ 6)) %>%
-    dplyr::ungroup()
-  if(nrow(tave) == 0) stop('Cannot proceed. No data available for your ROI')
+    dplyr::mutate(ocorr_o = dplyr::case_when(ocorr == 1 & utm %in% utm_ae   ~ 'Confirmado (C)',
+                                             utm %in% utm_ae                ~ 'Confirmado (B)',
+                                             !utm %in% utm_ae               ~ 'Provável',
+                                             TRUE ~ 'REVER')) %>%
+    dplyr::mutate(ocorr_rank = dplyr::case_when(ocorr_o == 'Confirmado (C)' ~ 1,
+                                                ocorr_o == 'Confirmado (B)' ~ 2,
+                                                TRUE ~ 3)) %>%
+    dplyr::group_by(especie) %>%
+    arrange(ocorr_rank) %>% distinct(especie, .keep_all = TRUE) %>% dplyr::ungroup()
+  if(nrow(tm) == 0) stop('Cannot proceed. No data available for your Region')
 
-  tave1 = tave %>% dplyr::group_by(especie) %>% dplyr::slice(which.min(ocor_n)) %>%
-    dplyr::left_join(tab_ref %>%
-                       dplyr::select(especie, nomecomum,
-                              lvvp06_estatuto_continente,
-                              dl156a_2013_anexos, spec, sulinterior,
-                              convencao_berna, convencao_bona),
-                     by = c('especie' = 'especie')) %>%
-    dplyr::select(especie, nomecomum, origem, nidificacao, ocorr, lvvp06_estatuto_continente,
-           dl156a_2013_anexos, spec, sulinterior, convencao_berna, convencao_bona)
+  #join with partial match
+  tm <- partial_join(tm,
+                     tab_ref %>%
+                       dplyr::select(
+                         grupo, familia,  especieRef = especie, nomecomum,
+                         lvvp06_estatuto_continente, iucn20092_rl_estatuto, spec,
+                         dl156a_2013_anexos, convencao_berna, convencao_bona,
+                         lvvp06_endemismo, lvvp06_ocorr_continente,
+                         uid
+                       ),
+                     by_x = "uid", pattern_y = "uid") %>%
+    select(
+      Grupo = grupo, Familia=familia,  Especie = especieRef, Nome_comum = nomecomum,
+      LVVP_Portugal = lvvp06_estatuto_continente,
+      LVIUCN = iucn20092_rl_estatuto,
+      Estatuto_SPEC = spec,
+      dl156a_2013_anexos, convencao_berna, convencao_bona,
+      lvvp06_endemismo, Tipo_de_ocorrencia = lvvp06_ocorr_continente,
+      Ocorrencia_na_AE = ocorr_o
+    )
 
-  tave2 = tave %>%
-    dplyr::select(especie, utm, nutm) %>%
-    tidyr::spread(key=utm, value=nutm, fill = NA)
+  # Nidificacao
+  # t_nidif <- t_atlas %>% group_by(especie) %>%
+  #   slice(which.max(cod_nidificacao)) %>%
+  #   mutate(nidifAE =
+  #            case_when(utm %in% utm_ae ~ 'Nidificação confirmada',
+  #                      !utm %in% utm_ae & nidificacao == 'Nidificação confirmada' ~ 'Nidificação confirmada (*)'
+  #            )) %>% select(especie, nidifAE)
+  # # join reproduction code
+  # tm <- tm %>% dplyr::left_join(t_nidif, by = c('especie' = 'especie')) %>% select(-especie)
 
-  tave1 = tave1 %>% dplyr::left_join(tave2, by = c('especie' = 'especie'))
-
-  return(tave1)
+  return(tm)
 }
