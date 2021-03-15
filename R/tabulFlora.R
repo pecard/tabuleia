@@ -1,8 +1,8 @@
 #' Build report-ready table with all known bird occurences for a region of interest.
 #' @description The \code{tabulAve} function will create a reference table (Excel file)
-#'     considering all bird species occuring in a roi, joining all relevant information
-#'     (taxonomic, conservation, occurence status and legal framework).
-#'     It will also summarize roi status (ratios for protected and threatened species).
+#'     considering all plant species occurring in a Roi, joining all relevant information
+#'     (taxonomic, conservation, occurrence status and legal framework).
+#'     It will also summarize Roi status (ratios for protected and threatened species).
 #'
 #' @param ae any spatial (sp, spatialdataframe) or coordinates vector indicating a region
 #'     of interest.
@@ -28,6 +28,7 @@
 #' @export
 #' @examples
 #'    # read roi from shapefile
+#'    library(tidyverse)
 #'    ae = sf::read_sf(here::here('sig', 'ae_buffer250m.shp'),
 #'                     stringsAsFactors = F) %>%
 #'     st_set_crs(3763)
