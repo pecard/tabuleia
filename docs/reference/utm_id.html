@@ -114,7 +114,7 @@ that touches and those in the vicinity (queen or rook) of roi." />
 that touches and those in the vicinity (queen or rook) of roi.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>utm_id</span><span class='op'>(</span>grid <span class='op'>=</span> <span class='va'>utm10</span>, roi <span class='op'>=</span> <span class='va'>ae</span>, buff <span class='op'>=</span> <span class='cn'>NULL</span>, contiguity <span class='op'>=</span> <span class='st'>"queen"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>utm_id</span><span class='op'>(</span>grid <span class='op'>=</span> <span class='va'>utm10</span>, roi <span class='op'>=</span> <span class='va'>ae</span>, buf <span class='op'>=</span> <span class='cn'>NULL</span>, contiguity <span class='op'>=</span> <span class='st'>"queen"</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -130,13 +130,13 @@ grid code.</p></td>
 the roi.' It can be of any valid vector type (point, line, polygon or collection).</p></td>
     </tr>
     <tr>
-      <th>contiguity</th>
-      <td><p>character identifying the contiguity search method "queen" or "rook".</p></td>
-    </tr>
-    <tr>
       <th>buf</th>
       <td><p>numeric indication whether the roi should be buffered to a given distance (meter).
 Default is NULL</p></td>
+    </tr>
+    <tr>
+      <th>contiguity</th>
+      <td><p>character identifying the contiguity search method "queen" or "rook".</p></td>
     </tr>
     </table>
 

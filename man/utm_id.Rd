@@ -4,7 +4,7 @@
 \alias{utm_id}
 \title{Identify the UTM grid squares touching and around a region of interest (roi).}
 \usage{
-utm_id(grid = utm10, roi = ae, buff = NULL, contiguity = "queen")
+utm_id(grid = utm10, roi = ae, buf = NULL, contiguity = "queen")
 }
 \arguments{
 \item{grid}{character indicating the UTM grid. Ensure you provide an 'UTM' column as
@@ -13,10 +13,10 @@ grid code.}
 \item{roi}{an spatial object sf, st, spatialpolygonsdataframe identifying
 the roi.' It can be of any valid vector type (point, line, polygon or collection).}
 
-\item{contiguity}{character identifying the contiguity search method "queen" or "rook".}
-
 \item{buf}{numeric indication whether the roi should be buffered to a given distance (meter).
 Default is NULL}
+
+\item{contiguity}{character identifying the contiguity search method "queen" or "rook".}
 }
 \value{
 A vector with UTM codes for study site (ae) and contiguous grids.
@@ -32,15 +32,11 @@ Currently only rook and queen implemented (not bishop)
 }
 \examples{
 \dontrun{
-   # read roi from shapefile
-   ae = sf::read_sf(here::here('sig', 'ae_buffer250m.shp'),
-                    stringsAsFactors = F)
-   # Cast multipolygon geometry to single parts
-   aeu = st_cast(ae, "POLYGON")
-   # Add an UID to each
-   aeu$id = c(1:2)
+   require(tabulEIA)
+   require(sf)
+   require(tidyverse)
    # get UTM codes for your roi
-   utm_all = utm_id(grid = utm10k, roi = aeu \%>\% filter(id == 2), buff = NULL, contiguity = 'queen')
+   utm_all = utm_id(grid = utm10k, roi = ae, buf = NULL, contiguity = 'queen')
    utm_ae <- utm_all$ae
    utm_contig <- utm_all$contig
    }

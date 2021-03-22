@@ -27,19 +27,15 @@
 #' @export
 #' @examples
 #' \dontrun{
-#'    # read roi from shapefile
-#'    ae = sf::read_sf(here::here('sig', 'ae_buffer250m.shp'),
-#'                     stringsAsFactors = F)
-#'    # Cast multipolygon geometry to single parts
-#'    aeu = st_cast(ae, "POLYGON")
-#'    # Add an UID to each
-#'    aeu$id = c(1:2)
+#'    require(tabulEIA)
+#'    require(sf)
+#'    require(tidyverse)
 #'    # get UTM codes for your roi
-#'    utm_all = utm_id(grid = utm10k, roi = aeu %>% filter(id == 2), buff = NULL, contiguity = 'queen')
+#'    utm_all = utm_id(grid = utm10k, roi = ae, buf = NULL, contiguity = 'queen')
 #'    utm_ae <- utm_all$ae
 #'    utm_contig <- utm_all$contig
 #'    }
-utm_id = function(grid = utm10, roi = ae, buff = NULL, contiguity = 'queen'){
+utm_id = function(grid = utm10, roi = ae, buf = NULL, contiguity = 'queen'){
   grid = grid %>% dplyr::select('UTM')
   if(is.na(st_crs(roi))) stop('No projection provided for your roi')
   #' check projection supplied
@@ -47,8 +43,8 @@ utm_id = function(grid = utm10, roi = ae, buff = NULL, contiguity = 'queen'){
     roi = sf::st_transform(roi, 3763)
   }
   #' buffer roi
-  if(!is.null(buff)){
-    roi = sf::st_buffer(roi, buff)
+  if(!is.null(buf)){
+    roi = sf::st_buffer(roi, buf)
   }
   #' Intersects
   if(any(class(roi) == 'sf')){
@@ -74,7 +70,7 @@ utm_id = function(grid = utm10, roi = ae, buff = NULL, contiguity = 'queen'){
     }
     utm_c = do.call(rbind, utm_l) %>%
       dplyr::distinct(UTM, .keep_all = T) %>%
-      st_set_geometry(NULL) %>%
+      sf::st_set_geometry(NULL) %>%
       dplyr::select(UTM) %>%
       dplyr::filter(! UTM %in% utm_ae) %>%
       dplyr::pull(UTM)
@@ -85,16 +81,16 @@ utm_id = function(grid = utm10, roi = ae, buff = NULL, contiguity = 'queen'){
       utm_l[[i]] = grid %>%
         dplyr::mutate(nb_rook =
                         as.numeric(ist_rook(.,
-                                             b = grid %>%
-                                               subset(UTM %in% i)
+                                            b = grid %>%
+                                              subset(UTM %in% i)
                         )
                         )
         ) %>%
         dplyr::filter(nb_rook == 1)
     }
     utm_c = do.call(rbind, utm_l) %>% dplyr::distinct(UTM, .keep_all = T) %>%
-      st_set_geometry(NULL) %>% select(UTM) %>% filter(! UTM %in% utm_ae) %>%
-      pull(UTM)
+      sf::st_set_geometry(NULL) %>% select(UTM) %>% filter(! UTM %in% utm_ae) %>%
+      dplyr::pull(UTM)
 
   }
   utml = list("ae"=utm_ae, 'contig' = utm_c)
