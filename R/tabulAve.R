@@ -1,13 +1,13 @@
-#' Build report-ready table with all known bird occurences for a region of interest.
-#' @description The \code{tabulAve} function will create a reference table (Excel file)
-#'     considering all bird species occuring in a roi, joining all relevant information
-#'     (taxonomic, conservation, occurence status and legal framework).
+#' Build report-ready table with all known bird occurrences for a region of interest.
+#' @description The \code{tabulAve} function will create a reference table
+#'     considering all bird species occurring in a roi, joining all relevant information
+#'     (taxonomic, conservation, occurrence status and legal framework).
 #'     It will also summarize roi status (ratios for protected and threatened species).
 #'
 #' @param ae any spatial (sp, spatialdataframe) or coordinates vector indicating a region
 #'     of interest.
 #'
-#' @param fielddata a data.frame with bid data obtained for the roi. Tipically a table with species
+#' @param fielddata a data.frame with bid data obtained for the roi. Typically a table with species
 #'     utm reference.
 #' @param atlas data.frame with Mammal and Bat Atlas data with references to the UTM 10x10 grid cell.
 #'
@@ -142,12 +142,11 @@ tabulAve <- function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, atla
                      by_x = "uid", pattern_y = "uid") %>%
     select(
       Grupo = grupo, Familia=familia,  Especie = especieRef, Nome_comum = nomecomum,
-      LVVP_Portugal = lvvp06_estatuto_continente,
+      Ocorrencia_na_AE = ocorr_o, LVVP_Portugal = lvvp06_estatuto_continente,
       LVIUCN = iucn20092_rl_estatuto,
       Estatuto_SPEC = spec,
       dl156a_2013_anexos, convencao_berna, convencao_bona,
-      lvvp06_endemismo, Tipo_de_ocorrencia = lvvp06_ocorr_continente,
-      Ocorrencia_na_AE = ocorr_o
+      lvvp06_endemismo, Tipo_de_ocorrencia = lvvp06_ocorr_continente
     )
 
   # Nidificacao

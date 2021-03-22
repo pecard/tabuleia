@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabulFlora.R
 \name{tabulFlora}
 \alias{tabulFlora}
-\title{Build report-ready table with all known bird occurences for a region of interest.}
+\title{Build report-ready table with all known plant species occurences for a region of interest (roi).}
 \usage{
 tabulFlora(
   utm_ae = utm_ae,
@@ -16,29 +16,29 @@ tabulFlora(
 
 \item{utm_q}{character vector of utm grid cells around roi}
 
-\item{fielddata}{a dataframe with bid data obtained for the roi. Tipically a table with species
-utm reference.}
+\item{fielddata}{a dataframe with data obtained for the roi. Tipically a table with species and
+utm 10x10 code reference.}
 
 \item{biblio}{character vector. Databases to get data from.  One of c('all', 'floraon', 'pterid').}
 
-\item{ae}{any spatial (sp, spatialdataframe) or coordinates vector indicating a region
+\item{ae}{any spatial (sp, sf, spatialdataframe) or coordinates vector indicating a region
 of interest.}
 }
 \value{
-an Excel file with a complete and pre-formatted table,
-ready for use on reports.
+a table with a complete and pre-formatted table,
+for use in reports.
 }
 \description{
 The \code{tabulAve} function will create a reference table (Excel file)
-considering all bird species occuring in a roi, joining all relevant information
-(taxonomic, conservation, occurence status and legal framework).
-It will also summarize roi status (ratios for protected and threatened species).
+considering all plant species occurring in a Roi, joining all relevant information
+(taxonomic, conservation, occurrence status and legal framework).
 }
 \details{
-ensure that field datasheet follow the standardized formatting.
+ensure that field datasheet follow the standardized formatting (Flora_TabulEIA_Template.xlsx).
 }
 \examples{
    # read roi from shapefile
+   library(tidyverse)
    ae = sf::read_sf(here::here('sig', 'ae_buffer250m.shp'),
                     stringsAsFactors = F) \%>\%
     st_set_crs(3763)

@@ -1,24 +1,24 @@
-#' Build report-ready table with all known bird occurences for a region of interest.
+#' Build report-ready table with all known plant species occurences for a region of interest (roi).
 #' @description The \code{tabulAve} function will create a reference table (Excel file)
 #'     considering all plant species occurring in a Roi, joining all relevant information
 #'     (taxonomic, conservation, occurrence status and legal framework).
-#'     It will also summarize Roi status (ratios for protected and threatened species).
 #'
-#' @param ae any spatial (sp, spatialdataframe) or coordinates vector indicating a region
+#' @param ae any spatial (sp, sf, spatialdataframe) or coordinates vector indicating a region
 #'     of interest.
 #'
-#' @param fielddata a dataframe with bid data obtained for the roi. Tipically a table with species
-#'     utm reference.
+#' @param fielddata a dataframe with data obtained for the roi. Tipically a table with species and
+#'     utm 10x10 code reference.
+#'
 #' @param biblio character vector. Databases to get data from.  One of c('all', 'floraon', 'pterid').
 #'
 #' @param utm_ae character vector of utm grid cells touching roi.
 #'
 #' @param utm_q character vector of utm grid cells around roi
 #'
-#' @return an Excel file with a complete and pre-formatted table,
-#'     ready for use on reports.
+#' @return a table with a complete and pre-formatted table,
+#'     for use in reports.
 #'
-#' @details ensure that field datasheet follow the standardized formatting.
+#' @details ensure that field datasheet follow the standardized formatting (Flora_TabulEIA_Template.xlsx).
 #'
 #' @author Paulo E. Cardoso
 #'
@@ -94,9 +94,17 @@ tabulFlora = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, bib
 
   if(nrow(tm) == 0) stop('Cannot proceed. No data available for your Region')
   if(nrow(tm) > 0){
+
+    tm$genero <- sub("^(\\w+)\\s?(.*)$","\\1",tm$especie) # split name at 1st space
     tm <-
       tm %>%
-      left_join(lvflora, by = c('especie' = 'Taxon'))
+      left_join(ref_flora_alfa, by = c('genero' = 'genero')) %>%
+      left_join(lvflora, by = c('especie' = 'Taxon')) %>%
+      select(Especie=especie, Familia = family, Ocorrencia = ocorr_o, UTM = utm,
+             Grau_Endemismo = Endemismo, Categoria_LVF = Categoria,
+             CriteriosLVF = Criterios) %>%
+      pivot_wider(names_from = UTM, values_from = UTM, values_fill = '-')
+
   } else stop('Cannot proceed. No data available for your Region')
 
   return(tm)
