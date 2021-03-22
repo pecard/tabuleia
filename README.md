@@ -45,8 +45,6 @@ Run a basic example:
 library(tabulEIA)
 library(tidyverse)
 library(sf)
-library(sp)
-library(tabulEIA)
 library(geotidy)
 
 # Copy geometry directly from QGIS wkt
@@ -55,11 +53,13 @@ pol <- st_geomfromtext('Polygon ((-8.2522 37.8960, -8.2513 37.8960, -8.2513 37.8
 pol <- st_as_sf(pol) %>% st_set_crs(4326)
 utm_all = utm_id(grid = utm10k, roi = pol, buff = NULL, contiguity = 'queen')
 
-# Flora ----
+# Flora
 # inventories from field work
 dados_campo <- read.delim('~path_to_my_field_data/fielddata.txt')
 
 tflora <- tabulEIA::tabulFlora(fielddata = dados_campo, utm_ae = utm_all$ae, utm_q = utm_all$contig,
                                biblio = 'all')
+# Avifauna
+tave = tabulEIA::tabulAve(fielddata = NULL, utm_ae = utm_ae, utm_q = utm_contig, atlas = atlas_aves, ebird = ebird)
 
 ```
