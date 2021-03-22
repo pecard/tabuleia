@@ -1,6 +1,6 @@
-# tabuleia
+# tabulEIA
 
-> tabulEIA Automatize the process of build species occurrence list for EIA reports.
+> tabulEIA Automatize the process of build species occurrence list for EIA reports along with conservation and taxonomic status.
 
 ## Disclaimer
 
@@ -12,15 +12,15 @@ resulting from the authorized or unauthorized use of the software.
 
 ## What is tabulEIA?
 
-TabulEIA provide species list tables for a region of interest by merging data from different sources pre-compiled to the 10 km UTM grid cells.
+TabulEIA provide species list tables for a region of interest by merging data from different sources pre-compiled to the 10 km UTM grid cells:
+
 - Field inventories
 - Atlases
 - Flora-on database
-- eBird
-- iNaturalist (research grade)
-- Natura 2000 report
+- eBird (5 minute min. census)
+- iNaturalist (research grade records)
+- Natura 2000 Report
 
-Data compiled at the 10 km UTM grid will be  The Provided region of interest will be  
 ## Installation
 
 You can install the released version of tabulEIA from
