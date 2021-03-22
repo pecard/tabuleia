@@ -64,8 +64,6 @@ tabulFlora = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, bib
     # Flora on
     t_floraon <-
       floraon %>%
-      mutate(words = sapply(strsplit(especie, " "), length)) %>%
-      filter(words < 4) %>%
       dplyr::select('especie', utm = 'quad') %>%
       dplyr::filter(utm %in% c(utm_ae, utm_q)) %>%
       dplyr::distinct(especie, utm, .keep_all = TRUE) %>%
