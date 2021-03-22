@@ -1,7 +1,6 @@
 # tabuleia
 
-> Easy build species occurrence table for EIA reports
-
+> tabulEIA Automatize the process of build species occurrence list for EIA reports.
 
 ## Disclaimer
 
@@ -13,14 +12,15 @@ resulting from the authorized or unauthorized use of the software.
 
 ## What is tabulEIA?
 
-TabulEIA provide species list tables for a region of interest compiling data from different sources.
-- Field Data
+TabulEIA provide species list tables for a region of interest by merging data from different sources pre-compiled to the 10 km UTM grid cells.
+- Field inventories
 - Atlases
 - Flora-on database
 - eBird
 - iNaturalist (research grade)
-- Natura 2000
+- Natura 2000 report
 
+Data compiled at the 10 km UTM grid will be  The Provided region of interest will be  
 ## Installation
 
 You can install the released version of tabulEIA from
@@ -28,18 +28,18 @@ You can install the released version of tabulEIA from
 
 ``` r
 library(devtools)
-install_github("pecard/tabulEIA")
+install_github("pecard/tabuleia")
 ```
 
 ## Contribute
 
-You are welcome to contribute to the package development and improvment
+You are welcome to contribute to the package development and improvement
 by [filling an issue](https://github.com/pecard/tabuleia/issues) at the
-package webpage.
+package web page.
 
 ## Usage
 
-Run a basic example with the provided data:
+Run a basic example:
 
 ``` r
 library(tabulEIA)
