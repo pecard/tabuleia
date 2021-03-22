@@ -1,12 +1,14 @@
 Package: tabulEIA
 Type: Package
-Title: Get complete available biodiversity data for a region of interest.
+Title: Get biodiversity data from different sources for a region of interest.
 Version: 0.1.0
 Authors@R: person("Paulo", "Cardoso", role=c("aut", "cre"),
     email = "paulo.c@bioinsight.pt")
 Mantainer: Paulo Cardoso
-Description: Make it easy to compile biodiversity data from
-    different sources.
+Description: tabulEIA provide a exuastive list of species occoring in a given area of
+    interest by retrieving data from field work, eBird, INaturalist, Flora-on and Atlases
+    table is provided with taxononic and conservation status and will be ready to be used in EIA
+    report.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

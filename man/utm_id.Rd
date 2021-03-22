@@ -4,7 +4,7 @@
 \alias{utm_id}
 \title{Identify the UTM grid squares touching and around a region of interest (roi).}
 \usage{
-utm_id(grid = utm10, roi = ae, buf = NULL, contiguity = "queen")
+utm_id(grid = utm10, roi = roi, buf = NULL, contiguity = "queen")
 }
 \arguments{
 \item{grid}{character indicating the UTM grid. Ensure you provide an 'UTM' column as
@@ -36,13 +36,16 @@ Currently only rook and queen implemented (not bishop)
    require(sf)
    require(tidyverse)
    # get UTM codes for your roi
+   d = data.frame(a = 1)
+   d$geom = 'Polygon ((-8.2522 37.8960, -8.2513 37.8960, -8.2513 37.8951, -8.2522 37.8951, -8.2522 37.8960))'
+   ae <- sf::st_as_sf(d, wkt = "geom")
+   ae <- sf::st_set_crs(ae, 4326)
    utm_all = utm_id(grid = utm10k, roi = ae, buf = NULL, contiguity = 'queen')
    utm_ae <- utm_all$ae
+   utm_ae
    utm_contig <- utm_all$contig
+   utm_contig
    }
-check projection supplied
-buffer roi
-Intersects
 }
 \author{
 Paulo E. Cardoso
