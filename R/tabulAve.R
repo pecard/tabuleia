@@ -31,6 +31,7 @@
 #' @import tidyverse
 #' @export
 #' @examples
+#' \dontrun{
 #'    # read roi from shapefile
 #'    ae = sf::read_sf(here::here('sig', 'ae_buffer250m.shp'),
 #'                     stringsAsFactors = F) %>%
@@ -46,7 +47,8 @@
 #'    # tabulate species occurence and status in the area
 #'    tave = tabulEIA::tabulAve(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, atlas = atlas_aves, ebird = ebird, gbif = gbif)
 #'    # export to csv
-#     write_excel_csv(tave, path=here::here('output', 'tabela_avifauna_agolada.csv'))
+#'    write_excel_csv(tave, path=here::here('output', 'tabela_avifauna_agolada.csv'))
+#'    }
 tabulAve <- function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, atlas = atlas_aves, ebird = NULL, gbif = NULL){
   # Field Data
   if(is.null(fielddata)){

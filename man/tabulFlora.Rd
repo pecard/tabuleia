@@ -37,6 +37,7 @@ considering all plant species occurring in a Roi, joining all relevant informati
 ensure that field datasheet follow the standardized formatting (Flora_TabulEIA_Template.xlsx).
 }
 \examples{
+\dontrun{
    # read roi from shapefile
    library(tidyverse)
    ae = sf::read_sf(here::here('sig', 'ae_buffer250m.shp'),
@@ -52,6 +53,8 @@ ensure that field datasheet follow the standardized formatting (Flora_TabulEIA_T
    tflora = tabulEIA::tabulFlora(fielddata = NULL, utm_ae = utm_ae, utm_q = utm_contig,
                                biblio = 'all')
    # export to csv
+   write_excel_csv(tflora, path=here::here('output', 'tabela_avifauna_agolada.csv'))
+   }
 }
 \author{
 Paulo E. Cardoso

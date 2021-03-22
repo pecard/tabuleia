@@ -127,28 +127,27 @@ grid code.</p></td>
     <tr>
       <th>roi</th>
       <td><p>an spatial object sf, st, spatialpolygonsdataframe identifying
-the roi.
-It can be of any valid vector type (point, line, polygon or collection).</p></td>
+the roi.' It can be of any valid vector type (point, line, polygon or collection).</p></td>
     </tr>
     <tr>
       <th>contiguity</th>
-      <td><p>character identifying the contiguity search method "queen" or "rook".
-<code>contiguity</code></p></td>
+      <td><p>character identifying the contiguity search method "queen" or "rook".</p></td>
     </tr>
     <tr>
       <th>buf</th>
-      <td><p>numeric indication wether the roi should be buffered to a given distance (meter).
+      <td><p>numeric indication whether the roi should be buffered to a given distance (meter).
 Default is NULL</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector with UTM codes.</p>
+    <p>A vector with UTM codes for study site (ae) and contiguous grids.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Make sure you have a topologically valid  vector. Using external files (like a shapefile)
-will require the .prj otherwise identify it with the corresponding numeric epsg code.</p>
+will require the .prj otherwise identify it with the corresponding numeric epsg code.
+Currently only rook and queen implemented (not bishop)</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Paulo E. Cardoso</p>

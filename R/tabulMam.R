@@ -33,6 +33,7 @@
 #' @import tidyverse
 #' @export
 #' @examples
+#' \dontrun{
 #'    # read roi from shapefile
 #'    ae = sf::read_sf(here::here('sig', 'ae_buffer250m.shp'),
 #'                     stringsAsFactors = F) %>%
@@ -46,7 +47,8 @@
 #'    # tabulate species occurence and status in the area
 #'    tmam = tabulEIA::tabulMam(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, atlas = 'all', inat = FALSE)
 #'    # export to csv
-#     write_excel_csv(tmam, path=here::here('output', 'tab_mammals.csv'))
+#'     write_excel_csv(tmam, path=here::here('output', 'tab_mammals.csv'))
+#'     }
 tabulMam = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, marinhos = FALSE, atlas = 'all', dhab = dh13_18, inat = NULL){
   # Field Data
   if(is.null(fielddata)){

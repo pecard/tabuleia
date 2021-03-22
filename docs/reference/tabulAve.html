@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build report-ready table with all known bird occurences for a region of interest. — tabulAve • tabulEIA</title>
+<title>Build report-ready table with all known bird occurrences for a region of interest. — tabulAve • tabulEIA</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,10 @@
 
 
 
-<meta property="og:title" content="Build report-ready table with all known bird occurences for a region of interest. — tabulAve" />
-<meta property="og:description" content="The tabulAve function will create a reference table (Excel file)
-considering all bird species occuring in a roi, joining all relevant information
-(taxonomic, conservation, occurence status and legal framework).
+<meta property="og:title" content="Build report-ready table with all known bird occurrences for a region of interest. — tabulAve" />
+<meta property="og:description" content="The tabulAve function will create a reference table
+considering all bird species occurring in a roi, joining all relevant information
+(taxonomic, conservation, occurrence status and legal framework).
 It will also summarize roi status (ratios for protected and threatened species)." />
 
 
@@ -106,15 +106,15 @@ It will also summarize roi status (ratios for protected and threatened species).
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build report-ready table with all known bird occurences for a region of interest.</h1>
+    <h1>Build report-ready table with all known bird occurrences for a region of interest.</h1>
     
     <div class="hidden name"><code>tabulAve.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The <code>tabulAve</code> function will create a reference table (Excel file)
-considering all bird species occuring in a roi, joining all relevant information
-(taxonomic, conservation, occurence status and legal framework).
+    <p>The <code>tabulAve</code> function will create a reference table
+considering all bird species occurring in a roi, joining all relevant information
+(taxonomic, conservation, occurrence status and legal framework).
 It will also summarize roi status (ratios for protected and threatened species).</p>
     </div>
 
@@ -140,7 +140,7 @@ It will also summarize roi status (ratios for protected and threatened species).
     </tr>
     <tr>
       <th>fielddata</th>
-      <td><p>a data.frame with bid data obtained for the roi. Tipically a table with species
+      <td><p>a data.frame with bid data obtained for the roi. Typically a table with species
 utm reference.</p></td>
     </tr>
     <tr>
@@ -174,24 +174,25 @@ ready for use on reports.</p>
     <p>Paulo E. Cardoso</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>   <span class='co'># read roi from shapefile</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+   <span class='co'># read roi from shapefile</span>
    <span class='va'>ae</span> <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>read_sf</a></span><span class='op'>(</span><span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>'sig'</span>, <span class='st'>'ae_buffer250m.shp'</span><span class='op'>)</span>,
                     stringsAsFactors <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_crs.html'>st_set_crs</a></span><span class='op'>(</span><span class='fl'>3763</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in sf::read_sf(here::here("sig", "ae_buffer250m.shp"), stringsAsFactors = F) %&gt;%     st_set_crs(3763): could not find function "%&gt;%"</span></div><div class='input'>   <span class='co'># Cast multipolygon geometry to single parts</span>
+   <span class='co'># Cast multipolygon geometry to single parts</span>
    <span class='va'>aeu</span> <span class='op'>=</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_cast.html'>st_cast</a></span><span class='op'>(</span><span class='va'>ae</span>, <span class='st'>"POLYGON"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in st_cast(ae, "POLYGON"): could not find function "st_cast"</span></div><div class='input'>   <span class='co'># Add an UID to each</span>
+   <span class='co'># Add an UID to each</span>
    <span class='va'>aeu</span><span class='op'>$</span><span class='va'>id</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in aeu$id = c(1:2): object 'aeu' not found</span></div><div class='input'>   <span class='co'># get UTM codes for your roi</span>
+   <span class='co'># get UTM codes for your roi</span>
    <span class='va'>utm_all</span> <span class='op'>=</span> <span class='fu'><a href='utm_id.html'>utm_id</a></span><span class='op'>(</span>grid <span class='op'>=</span> <span class='va'>utm10k</span>, roi <span class='op'>=</span> <span class='va'>aeu</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>id</span> <span class='op'>==</span> <span class='fl'>2</span><span class='op'>)</span>, buff <span class='op'>=</span> <span class='cn'>NULL</span>, contiguity <span class='op'>=</span> <span class='st'>'queen'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in aeu %&gt;% filter(id == 2): could not find function "%&gt;%"</span></div><div class='input'>   <span class='va'>utm_ae</span> <span class='op'>&lt;-</span> <span class='va'>utm_all</span><span class='op'>$</span><span class='va'>ae</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'utm_all' not found</span></div><div class='input'>   <span class='va'>utm_contig</span> <span class='op'>&lt;-</span> <span class='va'>utm_all</span><span class='op'>$</span><span class='va'>contig</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'utm_all' not found</span></div><div class='input'>   <span class='co'># tabulate species occurence and status in the area</span>
+   <span class='va'>utm_ae</span> <span class='op'>&lt;-</span> <span class='va'>utm_all</span><span class='op'>$</span><span class='va'>ae</span>
+   <span class='va'>utm_contig</span> <span class='op'>&lt;-</span> <span class='va'>utm_all</span><span class='op'>$</span><span class='va'>contig</span>
+   <span class='co'># tabulate species occurence and status in the area</span>
    <span class='va'>tave</span> <span class='op'>=</span> <span class='fu'>tabulEIA</span><span class='fu'>::</span><span class='fu'>tabulAve</span><span class='op'>(</span>utm_ae <span class='op'>=</span> <span class='va'>utm_ae</span>, utm_q <span class='op'>=</span> <span class='va'>utm_contig</span>, fielddata <span class='op'>=</span> <span class='cn'>NULL</span>, atlas <span class='op'>=</span> <span class='va'>atlas_aves</span>, ebird <span class='op'>=</span> <span class='va'>ebird</span>, gbif <span class='op'>=</span> <span class='va'>gbif</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error: Problem with `filter()` input `..1`.</span>
-#&gt; <span class='error'><span style='color: #BB0000;'>x</span><span> object 'utm_ae' not found</span>
-#&gt; <span class='error'></span><span style='color: #0000BB;'>i</span><span> Input `..1` is `utm %in% c(utm_ae, utm_q)`.</span></div><div class='input'>   <span class='co'># export to csv</span>
-</div></span></pre>
+   <span class='co'># export to csv</span>
+   <span class='fu'>write_excel_csv</span><span class='op'>(</span><span class='va'>tave</span>, path<span class='op'>=</span><span class='fu'>here</span><span class='fu'>::</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>'output'</span>, <span class='st'>'tabela_avifauna_agolada.csv'</span><span class='op'>)</span><span class='op'>)</span>
+   <span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

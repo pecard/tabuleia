@@ -44,6 +44,7 @@ It will also summarize roi status (ratios for protected and threatened species).
 ensure that field datasheet follow the standardized formatting.
 }
 \examples{
+\dontrun{
    # read roi from shapefile
    ae = sf::read_sf(here::here('sig', 'ae_buffer250m.shp'),
                     stringsAsFactors = F) \%>\%
@@ -59,6 +60,8 @@ ensure that field datasheet follow the standardized formatting.
    # tabulate species occurence and status in the area
    tave = tabulEIA::tabulAve(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, atlas = atlas_aves, ebird = ebird, gbif = gbif)
    # export to csv
+   write_excel_csv(tave, path=here::here('output', 'tabela_avifauna_agolada.csv'))
+   }
 }
 \author{
 Paulo E. Cardoso

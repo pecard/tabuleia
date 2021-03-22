@@ -27,6 +27,7 @@
 #' @import tidyverse
 #' @export
 #' @examples
+#' \dontrun{
 #'    # read roi from shapefile
 #'    library(tidyverse)
 #'    ae = sf::read_sf(here::here('sig', 'ae_buffer250m.shp'),
@@ -42,7 +43,8 @@
 #'    tflora = tabulEIA::tabulFlora(fielddata = NULL, utm_ae = utm_ae, utm_q = utm_contig,
 #'                                biblio = 'all')
 #'    # export to csv
-#     write_excel_csv(tflora, path=here::here('output', 'tabela_avifauna_agolada.csv'))
+#'    write_excel_csv(tflora, path=here::here('output', 'tabela_avifauna_agolada.csv'))
+#'    }
 tabulFlora = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, biblio = 'all'){
   # Field Data
   if(is.null(fielddata)){
