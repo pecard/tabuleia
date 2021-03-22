@@ -94,16 +94,15 @@ tabulFlora = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, bib
 
   if(nrow(tm) == 0) stop('Cannot proceed. No data available for your Region')
   if(nrow(tm) > 0){
-
     tm$genero <- sub("^(\\w+)\\s?(.*)$","\\1",tm$especie) # split name at 1st space
     tm <-
       tm %>%
-      left_join(ref_flora_alfa, by = c('genero' = 'genero')) %>%
+      left_join(select(ref_flora_alfa, -especie), by = c('genero' = 'genero')) %>%
       left_join(lvflora, by = c('especie' = 'Taxon')) %>%
-      select(Especie=especie, Familia = family, Ocorrencia = ocorr_o, UTM = utm,
+      select(Especie = especie, Familia = familia, Ocorrencia = ocorr_o, UTM = utm,
              Grau_Endemismo = Endemismo, Categoria_LVF = Categoria,
              CriteriosLVF = Criterios) %>%
-      pivot_wider(names_from = UTM, values_from = UTM, values_fill = '-')
+      pivot_wider(names_from = UTM)
 
   } else stop('Cannot proceed. No data available for your Region')
 
