@@ -105,8 +105,6 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tabulEIA</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/edzer/sp/">sp</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tabulEIA</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">geotidy</span><span class="op">)</span>
 
 <span class="co"># Copy geometry directly from QGIS wkt</span>
@@ -115,12 +113,14 @@
 <span class="va">pol</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="va">pol</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html">st_set_crs</a></span><span class="op">(</span><span class="fl">4326</span><span class="op">)</span>
 <span class="va">utm_all</span> <span class="op">=</span> <span class="fu"><a href="reference/utm_id.html">utm_id</a></span><span class="op">(</span>grid <span class="op">=</span> <span class="va">utm10k</span>, roi <span class="op">=</span> <span class="va">pol</span>, buff <span class="op">=</span> <span class="cn">NULL</span>, contiguity <span class="op">=</span> <span class="st">'queen'</span><span class="op">)</span>
 
-<span class="co"># Flora ----</span>
+<span class="co"># Flora</span>
 <span class="co"># inventories from field work</span>
 <span class="va">dados_campo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span><span class="op">(</span><span class="st">'~path_to_my_field_data/fielddata.txt'</span><span class="op">)</span>
 
 <span class="va">tflora</span> <span class="op">&lt;-</span> <span class="fu">tabulEIA</span><span class="fu">::</span><span class="fu"><a href="reference/tabulFlora.html">tabulFlora</a></span><span class="op">(</span>fielddata <span class="op">=</span> <span class="va">dados_campo</span>, utm_ae <span class="op">=</span> <span class="va">utm_all</span><span class="op">$</span><span class="va">ae</span>, utm_q <span class="op">=</span> <span class="va">utm_all</span><span class="op">$</span><span class="va">contig</span>,
-                               biblio <span class="op">=</span> <span class="st">'all'</span><span class="op">)</span></code></pre></div>
+                               biblio <span class="op">=</span> <span class="st">'all'</span><span class="op">)</span>
+<span class="co"># Avifauna</span>
+<span class="va">tave</span> <span class="op">=</span> <span class="fu">tabulEIA</span><span class="fu">::</span><span class="fu"><a href="reference/tabulAve.html">tabulAve</a></span><span class="op">(</span>fielddata <span class="op">=</span> <span class="cn">NULL</span>, utm_ae <span class="op">=</span> <span class="va">utm_ae</span>, utm_q <span class="op">=</span> <span class="va">utm_contig</span>, atlas <span class="op">=</span> <span class="va">atlas_aves</span>, ebird <span class="op">=</span> <span class="va">ebird</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>

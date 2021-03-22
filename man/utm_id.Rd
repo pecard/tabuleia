@@ -15,7 +15,7 @@ the roi.
 It can be of any valid vector type (point, line, polygon or collection).}
 
 \item{contiguity}{character identifying the contiguity search method "queen" or "rook".
-\code{\link[https://i.stack.imgur.com/CWIHi.jpg]{contiguity}}}
+\code{\link[https://i.imgur.com/da0P9CI.png]{contiguity}}}
 
 \item{buf}{numeric indication wether the roi should be buffered to a given distance (meter).
 Default is NULL}
@@ -30,6 +30,7 @@ that touches and those in the vicinity (queen or rook) of roi.
 \details{
 Make sure you have a topologically valid  vector. Using external files (like a shapefile)
 will require the .prj otherwise identify it with the corresponding numeric epsg code.
+Currently only rook and queen implemented (not bishop)
 }
 \examples{
    # do not run

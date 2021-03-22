@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabulAve.R
 \name{tabulAve}
 \alias{tabulAve}
-\title{Build report-ready table with all known bird occurences for a region of interest.}
+\title{Build report-ready table with all known bird occurrences for a region of interest.}
 \usage{
 tabulAve(
   utm_ae = utm_ae,
@@ -18,7 +18,7 @@ tabulAve(
 
 \item{utm_q}{character vector of utm grid cells around roi}
 
-\item{fielddata}{a data.frame with bid data obtained for the roi. Tipically a table with species
+\item{fielddata}{a data.frame with bid data obtained for the roi. Typically a table with species
 utm reference.}
 
 \item{atlas}{data.frame with Mammal and Bat Atlas data with references to the UTM 10x10 grid cell.}
@@ -35,9 +35,9 @@ an data.frame file with a complete and pre-formatted table,
 ready for use on reports.
 }
 \description{
-The \code{tabulAve} function will create a reference table (Excel file)
-considering all bird species occuring in a roi, joining all relevant information
-(taxonomic, conservation, occurence status and legal framework).
+The \code{tabulAve} function will create a reference table
+considering all bird species occurring in a roi, joining all relevant information
+(taxonomic, conservation, occurrence status and legal framework).
 It will also summarize roi status (ratios for protected and threatened species).
 }
 \details{

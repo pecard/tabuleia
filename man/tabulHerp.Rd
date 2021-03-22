@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabulHerp.R
 \name{tabulHerp}
 \alias{tabulHerp}
-\title{Build report-ready table with all known amphibians and reptiles occurences for a region of interest.}
+\title{Build report-ready table with all known amphibians and reptiles occurrences for a region of interest.}
 \usage{
 tabulHerp(
   utm_ae = utm_ae,
@@ -18,12 +18,12 @@ tabulHerp(
 
 \item{utm_q}{character. vector of utm grid cells around roi}
 
-\item{fielddata}{dataframe. Table with bid data obtained for the roi. Tipically a table with species
+\item{fielddata}{dataframe. Table with bid data obtained for the roi. Typically a table with species
 utm reference.}
 
 \item{atlas}{character. ICNF Atlas data with references 17384 entries to the UTM 10x10 grid cell.}
 
-\item{dhab}{character. Use Habitat Direective data from 2013-2018 report published by ICNF.}
+\item{dhab}{character. Use Habitat Directive data from 2013-2018 report published by ICNF.}
 
 \item{inat}{logical. TRUE to use Inaturalist Dataset for 2018 and 2019 with thousands of entries available
 on iNaturalist database from 2018 and 2019.}
@@ -37,12 +37,12 @@ an Excel file with a complete and pre-formatted table,
 }
 \description{
 The \code{tabulMam} function will create a reference table (Excel file)
-considering all amphibians and reptiles species occuring in a region, joining all relevant information
-(taxonomic, conservation, occurence status and legal framework).
+considering all amphibians and reptiles species occurring in a region, joining all relevant information
+(taxonomic, conservation, occurrence status and legal framework).
 It will also (in the future) summarize region status (ratios for protected and threatened species).
 }
 \details{
-ensure that field datasheet follow the standardized formatting.
+ensure that field dataset follow the standardized formatting.
 }
 \examples{
    # read roi from shapefile

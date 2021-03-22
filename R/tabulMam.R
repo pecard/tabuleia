@@ -1,13 +1,13 @@
-#' Build report-ready table with all known mammal occurences for a region of interest.
+#' Build report-ready table with all known mammal occurrences for a region of interest.
 #' @description The \code{tabulMam} function will create a reference table (Excel file)
-#'     considering all mammal species occuring in a region, joining all relevant information
-#'     (taxonomic, conservation, occurence status and legal framework).
+#'     considering all mammal species occurring in a region, joining all relevant information
+#'     (taxonomic, conservation, occurrence status and legal framework).
 #'     It will also (in the future) summarize region status (ratios for protected and threatened species).
 #'
 #' @param ae sf object. any spatial (sp, spatialdataframe) or coordinates vector indicating a region
 #'     of interest.
 #'
-#' @param fielddata dataframe. Table with bid data obtained for the roi. Tipically a table with species
+#' @param fielddata dataframe. Table with bid data obtained for the roi. Typically a table with species
 #'     utm reference.
 #' @param atlas character. Mammal and Bat Atlas data with references to the UTM 10x10 grid cell.
 #'
@@ -24,7 +24,7 @@
 #' @return an Excel file with a complete and pre-formatted table,
 #'     (almost) ready for use on EIA reports.
 #'
-#' @details ensure that field datasheet follow the standardized formatting.
+#' @details ensure that field dataset follow the standardized formatting.
 #'
 #' @author Paulo E. Cardoso
 #'

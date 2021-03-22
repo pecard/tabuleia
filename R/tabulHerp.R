@@ -1,20 +1,20 @@
-#' Build report-ready table with all known amphibians and reptiles occurences for a region of interest.
+#' Build report-ready table with all known amphibians and reptiles occurrences for a region of interest.
 #' @description The \code{tabulMam} function will create a reference table (Excel file)
-#'     considering all amphibians and reptiles species occuring in a region, joining all relevant information
-#'     (taxonomic, conservation, occurence status and legal framework).
+#'     considering all amphibians and reptiles species occurring in a region, joining all relevant information
+#'     (taxonomic, conservation, occurrence status and legal framework).
 #'     It will also (in the future) summarize region status (ratios for protected and threatened species).
 #'
 #' @param ae sf object. any spatial (sp, spatialdataframe) or coordinates vector indicating a region
 #'     of interest.
 #'
-#' @param fielddata dataframe. Table with bid data obtained for the roi. Tipically a table with species
+#' @param fielddata dataframe. Table with bid data obtained for the roi. Typically a table with species
 #'     utm reference.
 #' @param atlas character. ICNF Atlas data with references 17384 entries to the UTM 10x10 grid cell.
 #'
 #' @param inat logical. TRUE to use Inaturalist Dataset for 2018 and 2019 with thousands of entries available
 #' on iNaturalist database from 2018 and 2019.
 #'
-#' @param dhab character. Use Habitat Direective data from 2013-2018 report published by ICNF.
+#' @param dhab character. Use Habitat Directive data from 2013-2018 report published by ICNF.
 #'
 #' @param utm_ae character. vector of utm grid cells touching roi.
 #'
@@ -23,7 +23,7 @@
 #' @return an Excel file with a complete and pre-formatted table,
 #'     (almost) ready for use on reports.
 #'
-#' @details ensure that field datasheet follow the standardized formatting.
+#' @details ensure that field dataset follow the standardized formatting.
 #'
 #' @author Paulo E. Cardoso
 #'

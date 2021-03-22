@@ -10,7 +10,7 @@
 #' Default is NULL
 #'
 #' @param contiguity character identifying the contiguity search method "queen" or "rook".
-#' \code{\link[https://i.stack.imgur.com/CWIHi.jpg]{contiguity}}
+#' \code{\link[https://i.imgur.com/da0P9CI.png]{contiguity}}
 #'
 #' @param grid character indicating the UTM grid. Ensure you provide an 'UTM' column as
 #' grid code.
@@ -18,6 +18,7 @@
 #'
 #' @details Make sure you have a topologically valid  vector. Using external files (like a shapefile)
 #' will require the .prj otherwise identify it with the corresponding numeric epsg code.
+#' Currently only rook and queen implemented (not bishop)
 #'
 #' @author Paulo E. Cardoso
 #'

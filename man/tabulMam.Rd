@@ -2,7 +2,7 @@
 % Please edit documentation in R/tabulMam.R
 \name{tabulMam}
 \alias{tabulMam}
-\title{Build report-ready table with all known mammal occurences for a region of interest.}
+\title{Build report-ready table with all known mammal occurrences for a region of interest.}
 \usage{
 tabulMam(
   utm_ae = utm_ae,
@@ -19,7 +19,7 @@ tabulMam(
 
 \item{utm_q}{character. vector of utm grid cells around roi}
 
-\item{fielddata}{dataframe. Table with bid data obtained for the roi. Tipically a table with species
+\item{fielddata}{dataframe. Table with bid data obtained for the roi. Typically a table with species
 utm reference.}
 
 \item{marinhos}{Logical. False (default) exclude marine mammals. To include change to TRUE.}
@@ -39,12 +39,12 @@ an Excel file with a complete and pre-formatted table,
 }
 \description{
 The \code{tabulMam} function will create a reference table (Excel file)
-considering all mammal species occuring in a region, joining all relevant information
-(taxonomic, conservation, occurence status and legal framework).
+considering all mammal species occurring in a region, joining all relevant information
+(taxonomic, conservation, occurrence status and legal framework).
 It will also (in the future) summarize region status (ratios for protected and threatened species).
 }
 \details{
-ensure that field datasheet follow the standardized formatting.
+ensure that field dataset follow the standardized formatting.
 }
 \examples{
    # read roi from shapefile
