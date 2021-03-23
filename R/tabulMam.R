@@ -34,24 +34,27 @@
 #' @export
 #' @examples
 #' \dontrun{
-#'    # read roi from shapefile
-#'    ae = sf::read_sf(here::here('sig', 'ae_buffer250m.shp'),
-#'                     stringsAsFactors = F) %>%
-#'     st_set_crs(3763)
-#'    # Cast multipolygon geometry to single parts
-#'    aeu = st_cast(ae, "POLYGON")
-#'    # Add an UID to each
-#'    aeu$id = c(1:2)
-#'    # get UTM codes for your roi
-#'    utm_all = utm_id(grid = utm10k, roi = aeu %>% filter(id == 2), buff = NULL, contiguity = 'queen')
-#'    # tabulate species occurence and status in the area
-#'    tmam = tabulEIA::tabulMam(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, atlas = 'all', inat = FALSE)
-#'    # export to csv
-#'     write_excel_csv(tmam, path=here::here('output', 'tab_mammals.csv'))
-#'     }
-tabulMam = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, marinhos = FALSE, atlas = 'all', dhab = dh13_18, inat = NULL){
+#' # read roi from shapefile
+#' ae <- sf::read_sf(here::here("sig", "ae_buffer250m.shp"),
+#'   stringsAsFactors = F
+#' ) %>%
+#'   st_set_crs(3763)
+#' # Cast multipolygon geometry to single parts
+#' aeu <- st_cast(ae, "POLYGON")
+#' # Add an UID to each
+#' aeu$id <- c(1:2)
+#' # get UTM codes for your roi
+#' utm_all <- utm_id(grid = utm10k, roi = aeu %>% filter(id == 2), buff = NULL, contiguity = "queen")
+#' # tabulate species occurence and status in the area
+#' tmam <- tabulEIA::tabulMam(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, atlas = "all", inat = FALSE)
+#' # export to csv
+#' write_excel_csv(tmam, path = here::here("output", "tab_mammals.csv"))
+#' }
+tabulMam <- function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL,
+                     marinhos = FALSE, atlas = "all", dhab = dh13_18,
+                     inat = NULL) {
   # Field Data
-  if(is.null(fielddata)){
+  if (is.null(fielddata)) {
     t_campo <- data.frame(
       especie = character(),
       utm = character(),
@@ -59,27 +62,30 @@ tabulMam = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, marin
       origem = character(),
       fonte = character(),
       uid = character(),
-      stringsAsFactors = FALSE)
-  } else{
+      stringsAsFactors = FALSE
+    )
+  } else {
     t_campo <- fielddata
     t_campo <-
       t_campo %>%
       dplyr::select(especie, utm, uid) %>%
       group_by(especie, utm) %>%
       dplyr::distinct(especie, .keep_all = TRUE) %>%
-      dplyr::mutate(ocorr = 1,
-                    origem = 'campo',
-                    fonte = 'Campo') %>%
+      dplyr::mutate(
+        ocorr = 1,
+        origem = "campo",
+        fonte = "Campo"
+      ) %>%
       ungroup()
   }
   # Atlas
-  if(atlas == "all"){
+  if (atlas == "all") {
     t_atlasm <-
       atlas_mam %>%
       dplyr::select(especie, utm, uid) %>%
       dplyr::filter(utm %in% c(utm_ae, utm_q)) %>%
       dplyr::distinct(especie, utm, .keep_all = TRUE) %>%
-      dplyr::mutate(ocorr = 2, origem = 'Bencatel', fonte = 'Bibliografia')
+      dplyr::mutate(ocorr = 2, origem = "Bencatel", fonte = "Bibliografia")
 
     # Quirop
     t_atlasq <-
@@ -87,10 +93,10 @@ tabulMam = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, marin
       dplyr::select(especie, utm, uid) %>%
       dplyr::filter(utm %in% c(utm_ae, utm_q)) %>%
       dplyr::distinct(especie, utm, .keep_all = TRUE) %>%
-      dplyr::mutate(ocorr = 2, origem = 'ICNF', fonte = 'Bibliografia')
+      dplyr::mutate(ocorr = 2, origem = "ICNF", fonte = "Bibliografia")
 
     t_atlas <- dplyr::bind_rows(t_atlasm, t_atlasq)
-  } else{
+  } else {
     t_atlas <- data.frame(
       especie = character(),
       utm = character(),
@@ -98,10 +104,11 @@ tabulMam = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, marin
       origem = character(),
       fonte = character(),
       uid = character(),
-      stringsAsFactors = FALSE)
+      stringsAsFactors = FALSE
+    )
   }
 
-  if(is.null(dhab)){
+  if (is.null(dhab)) {
     # diretiva habitats 2013-2018
     t_dhab <- data.frame(
       especie = character(),
@@ -110,17 +117,18 @@ tabulMam = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, marin
       origem = character(),
       fonte = character(),
       uid = character(),
-      stringsAsFactors=FALSE)
-  } else{
+      stringsAsFactors = FALSE
+    )
+  } else {
     t_dhab <-
       dhab %>%
       dplyr::filter(grupo == "Mamíferos", utm %in% c(utm_ae, utm_q)) %>%
       dplyr::select(especie, utm, uid) %>%
       dplyr::distinct(especie, utm, .keep_all = TRUE) %>%
-      dplyr::mutate(ocorr = 3, origem = 'DH2013-2018', fonte = 'Bibliografia')
+      dplyr::mutate(ocorr = 3, origem = "DH2013-2018", fonte = "Bibliografia")
   }
 
-  if(is.null(inat)){
+  if (is.null(inat)) {
     # iNaturalist
     t_inat <- data.frame(
       especie = character(),
@@ -129,14 +137,15 @@ tabulMam = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, marin
       origem = character(),
       fonte = character(),
       uid = character(),
-      stringsAsFactors=FALSE)
-  } else{
+      stringsAsFactors = FALSE
+    )
+  } else {
     t_inat <-
       inat18_19 %>%
       dplyr::select(especie, utm, uid) %>%
       dplyr::filter(utm %in% c(utm_ae, utm_q)) %>%
       dplyr::distinct(especie, utm, .keep_all = TRUE) %>%
-      dplyr::mutate(ocorr = 4, origem = 'iNat', fonte = 'Bibliografia')
+      dplyr::mutate(ocorr = 4, origem = "iNat", fonte = "Bibliografia")
   }
 
   # Bind all
@@ -145,29 +154,38 @@ tabulMam = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, marin
     dplyr::group_by(especie, utm) %>%
     dplyr::filter(ocorr == min(ocorr)) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(ocorr_o = dplyr::case_when(ocorr == 1 & utm %in% utm_ae   ~ 'Confirmado (C)',
-                                             utm %in% utm_ae                ~ 'Confirmado (B)',
-                                             !utm %in% utm_ae               ~ 'Provável',
-                                             TRUE ~ 'REVER')) %>%
-    dplyr::mutate(ocorr_rank = dplyr::case_when(ocorr_o == 'Confirmado (C)' ~ 1,
-                                                ocorr_o == 'Confirmado (B)' ~ 2,
-                                                TRUE ~ 3)) %>%
+    dplyr::mutate(ocorr_o = dplyr::case_when(
+      ocorr == 1 & utm %in% utm_ae ~ "Confirmado (C)",
+      utm %in% utm_ae ~ "Confirmado (B)",
+      !utm %in% utm_ae ~ "Provável",
+      TRUE ~ "REVER"
+    )) %>%
+    dplyr::mutate(ocorr_rank = dplyr::case_when(
+      ocorr_o == "Confirmado (C)" ~ 1,
+      ocorr_o == "Confirmado (B)" ~ 2,
+      TRUE ~ 3
+    )) %>%
     dplyr::group_by(especie) %>%
-    arrange(ocorr_rank) %>% distinct(especie, .keep_all = TRUE) %>% dplyr::ungroup()
+    arrange(ocorr_rank) %>%
+    distinct(especie, .keep_all = TRUE) %>%
+    dplyr::ungroup()
 
-  if(nrow(tm) == 0) stop('Cannot proceed. No data available for your Region')
+  if (nrow(tm) == 0) stop("Cannot proceed. No data available for your Region")
 
-  #join with partial match
+  # join with partial match
   tm <- partial_join(tm,
-                     tab_ref %>%
-                       dplyr::select(grupo, familia,  especieRef = especie, nomecomum,
-                                     lvvp06_estatuto_continente, iucn20092_rl_estatuto, spec,
-                                     dl156a_2013_anexos, convencao_berna, convencao_bona,
-                                     lvvp06_endemismo,lvvp06_ocorr_continente,
-                                     uid),
-                     by_x = "uid", pattern_y = "uid") %>%
+    tab_ref %>%
+      dplyr::select(grupo, familia,
+        especieRef = especie, nomecomum,
+        lvvp06_estatuto_continente, iucn20092_rl_estatuto, spec,
+        dl156a_2013_anexos, convencao_berna, convencao_bona,
+        lvvp06_endemismo, lvvp06_ocorr_continente,
+        uid
+      ),
+    by_x = "uid", pattern_y = "uid"
+  ) %>%
     select(
-      Grupo = grupo, Familia=familia,  Especie = especieRef, Nome_comum = nomecomum,
+      Grupo = grupo, Familia = familia, Especie = especieRef, Nome_comum = nomecomum,
       LVVP_Portugal = lvvp06_estatuto_continente,
       LVIUCN = iucn20092_rl_estatuto,
       Estatuto_SPEC = spec,
@@ -176,7 +194,7 @@ tabulMam = function(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, marin
       Ocorrencia_na_AE = ocorr_o
     )
   # Excluir Marinhos
-    if(marinhos == F) tm <- tm %>%  filter(!Familia %in% c('BALAENOPTERIDAE', 'DELPHINIDAE', 'PHOCOENIDAE','PHYSETERIDAE','ZIPHIIDAE','PHOCIDAE'))
+  if (marinhos == F) tm <- tm %>% filter(!Familia %in% c("BALAENOPTERIDAE", "DELPHINIDAE", "PHOCOENIDAE", "PHYSETERIDAE", "ZIPHIIDAE", "PHOCIDAE"))
 
   return(tm)
 }

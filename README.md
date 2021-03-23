@@ -1,7 +1,7 @@
 # tabulEIA
 
 > tabulEIA Automatize the process of building species occurrence list for EIA reports.
-Lested species arearranged with their conservation and taxonomic status.
+Listed species are arearranged with their conservation and taxonomic status.
 
 ## website
 
@@ -20,7 +20,8 @@ resulting from the authorized or unauthorized use of the software.
 
 tabulEIA provides an exhaustive list of species occurring at a given area of interest. 
 It does so by retrieving pre-compiled data from many sources: fieldwork, eBird, iNaturalist, 
-Flora-on, Atlases, Regional databases, EU reports. Lists are provided with taxonomic and conservation status and will be ready to be used in EIA report.
+Flora-on, Atlases, Regional databases, EU reports. Lists are provided with taxonomic 
+and conservation status and will be ready to be used in EIA report.
 Data being retrieved from:
 
 - Field inventories
@@ -46,6 +47,11 @@ You are welcome to contribute to the package development and improvement
 by [filling an issue](https://github.com/pecard/tabuleia/issues) at the
 package web page.
 
+## Code of Conduct
+  
+  Please note that the tabulEIA project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). 
+  By contributing to this project, you agree to abide by its terms.
+  
 ## Usage
 
 Run a basic example:

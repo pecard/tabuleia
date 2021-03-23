@@ -2,7 +2,8 @@
 % Please edit documentation in R/tabulAve.R
 \name{tabulAve}
 \alias{tabulAve}
-\title{Build report-ready table with all known bird occurrences for a region of interest.}
+\title{Build report-ready table with all known bird occurrences for a region of
+interest.}
 \usage{
 tabulAve(
   utm_ae = utm_ae,
@@ -18,16 +19,19 @@ tabulAve(
 
 \item{utm_q}{character vector of utm grid cells around roi}
 
-\item{fielddata}{a data.frame with bid data obtained for the roi. Typically a table with species
+\item{fielddata}{a data.frame with bid data obtained for the roi. Typically a
+table with species
 utm reference.}
 
-\item{atlas}{data.frame with Mammal and Bat Atlas data with references to the UTM 10x10 grid cell.}
+\item{atlas}{data.frame with Mammal and Bat Atlas data with references to the
+UTM 10x10 grid cell.}
 
 \item{ebird}{data.frame with eBird Dataset from 2005 to 2019.}
 
 \item{gbif}{data.frame with GBIF Dataset from 2005 to 2019.}
 
-\item{ae}{any spatial (sp, spatialdataframe) or coordinates vector indicating a region
+\item{ae}{any spatial (sp, spatialdataframe) or coordinates vector indicating
+a region
 of interest.}
 }
 \value{
@@ -36,32 +40,39 @@ ready for use on reports.
 }
 \description{
 The \code{tabulAve} function will create a reference table
-considering all bird species occurring in a roi, joining all relevant information
+considering all bird species occurring in a roi, joining all relevant
+information
 (taxonomic, conservation, occurrence status and legal framework).
-It will also summarize roi status (ratios for protected and threatened species).
+It will also summarize roi status (ratios for protected and threatened
+species).
 }
 \details{
 ensure that field datasheet follow the standardized formatting.
 }
 \examples{
 \dontrun{
-   # read roi from shapefile
-   ae = sf::read_sf(here::here('sig', 'ae_buffer250m.shp'),
-                    stringsAsFactors = F) \%>\%
-    st_set_crs(3763)
-   # Cast multipolygon geometry to single parts
-   aeu = st_cast(ae, "POLYGON")
-   # Add an UID to each
-   aeu$id = c(1:2)
-   # get UTM codes for your roi
-   utm_all = utm_id(grid = utm10k, roi = aeu \%>\% filter(id == 2), buff = NULL, contiguity = 'queen')
-   utm_ae <- utm_all$ae
-   utm_contig <- utm_all$contig
-   # tabulate species occurence and status in the area
-   tave = tabulEIA::tabulAve(utm_ae = utm_ae, utm_q = utm_contig, fielddata = NULL, atlas = atlas_aves, ebird = ebird, gbif = gbif)
-   # export to csv
-   write_excel_csv(tave, path=here::here('output', 'tabela_avifauna_agolada.csv'))
-   }
+# read roi from shapefile
+ae <- sf::read_sf(here::here("sig", "ae_buffer250m.shp"),
+  stringsAsFactors = F
+) \%>\%
+  st_set_crs(3763)
+# Cast multipolygon geometry to single parts
+aeu <- st_cast(ae, "POLYGON")
+# Add an UID to each
+aeu$id <- c(1:2)
+# get UTM codes for your roi
+utm_all <- utm_id(grid = utm10k, roi = aeu \%>\% filter(id == 2), buff = NULL,
+                  contiguity = "queen")
+utm_ae <- utm_all$ae
+utm_contig <- utm_all$contig
+# tabulate species occurence and status in the area
+tave <- tabulEIA::tabulAve(utm_ae = utm_ae, utm_q = utm_contig,
+                           fielddata = NULL,
+atlas = atlas_aves, ebird = ebird, gbif = gbif)
+# export to csv
+write_excel_csv(tave,
+                path = here::here("output", "tabela_avifauna_agolada.csv"))
+}
 }
 \author{
 Paulo E. Cardoso

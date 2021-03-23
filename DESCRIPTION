@@ -18,3 +18,5 @@ Imports:
     tidyverse (>= 1.1.1),
     sp (>= 1.2-5)
 Roxygen: list(markdown = TRUE)
+Suggests: 
+    covr

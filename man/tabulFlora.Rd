@@ -38,23 +38,26 @@ ensure that field datasheet follow the standardized formatting (Flora_TabulEIA_T
 }
 \examples{
 \dontrun{
-   # read roi from shapefile
-   library(tidyverse)
-   ae = sf::read_sf(here::here('sig', 'ae_buffer250m.shp'),
-                    stringsAsFactors = F) \%>\%
-    st_set_crs(3763)
-   # Cast multipolygon geometry to single parts
-   aeu = st_cast(ae, "POLYGON")
-   # Add an UID to each
-   aeu$id = c(1:2)
-   # get UTM codes for your roi
-   utm_all = utm_id(grid = utm10k, roi = aeu \%>\% filter(id == 2), buff = NULL, contiguity = 'queen')
-   # tabulate species occurence and status in the area
-   tflora = tabulEIA::tabulFlora(fielddata = NULL, utm_ae = utm_ae, utm_q = utm_contig,
-                               biblio = 'all')
-   # export to csv
-   write_excel_csv(tflora, path=here::here('output', 'tabela_avifauna_agolada.csv'))
-   }
+# read roi from shapefile
+library(tidyverse)
+ae <- sf::read_sf(here::here("sig", "ae_buffer250m.shp"),
+  stringsAsFactors = F
+) \%>\%
+  st_set_crs(3763)
+# Cast multipolygon geometry to single parts
+aeu <- st_cast(ae, "POLYGON")
+# Add an UID to each
+aeu$id <- c(1:2)
+# get UTM codes for your roi
+utm_all <- utm_id(grid = utm10k, roi = aeu \%>\% filter(id == 2), buff = NULL, contiguity = "queen")
+# tabulate species occurence and status in the area
+tflora <- tabulEIA::tabulFlora(
+  fielddata = NULL, utm_ae = utm_ae, utm_q = utm_contig,
+  biblio = "all"
+)
+# export to csv
+write_excel_csv(tflora, path = here::here("output", "tabela_avifauna_agolada.csv"))
+}
 }
 \author{
 Paulo E. Cardoso

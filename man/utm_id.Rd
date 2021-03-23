@@ -32,20 +32,20 @@ Currently only rook and queen implemented (not bishop)
 }
 \examples{
 \dontrun{
-   require(tabulEIA)
-   require(sf)
-   require(tidyverse)
-   # get UTM codes for your roi
-   d = data.frame(a = 1)
-   d$geom = 'Polygon ((-8.2522 37.8960, -8.2513 37.8960, -8.2513 37.8951, -8.2522 37.8951, -8.2522 37.8960))'
-   ae <- sf::st_as_sf(d, wkt = "geom")
-   ae <- sf::st_set_crs(ae, 4326)
-   utm_all = utm_id(grid = utm10k, roi = ae, buf = NULL, contiguity = 'queen')
-   utm_ae <- utm_all$ae
-   utm_ae
-   utm_contig <- utm_all$contig
-   utm_contig
-   }
+require(tabulEIA)
+require(sf)
+require(tidyverse)
+# get UTM codes for your roi
+d <- data.frame(a = 1)
+d$geom <- "Polygon ((-8.2522 37.8960, -8.2513 37.8960, -8.2513 37.8951, -8.2522 37.8951, -8.2522 37.8960))"
+ae <- sf::st_as_sf(d, wkt = "geom")
+ae <- sf::st_set_crs(ae, 4326)
+utm_all <- utm_id(grid = utm10k, roi = ae, buf = NULL, contiguity = "queen")
+utm_ae <- utm_all$ae
+utm_ae
+utm_contig <- utm_all$contig
+utm_contig
+}
 }
 \author{
 Paulo E. Cardoso
