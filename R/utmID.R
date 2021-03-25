@@ -43,6 +43,9 @@
 #' }
 utm_id <- function(grid = utm10, roi = roi, buf = NULL, contiguity = "queen") {
   grid <- grid %>% dplyr::select("UTM")
+
+  if(length(ae) > 1)  roi <- st_combine(roi)
+
   if (is.na(st_crs(roi))) stop("No projection provided for your roi")
   # check projection supplied
   if (sf::st_crs(roi)$epsg != 3763) {
@@ -52,6 +55,7 @@ utm_id <- function(grid = utm10, roi = roi, buf = NULL, contiguity = "queen") {
   if (!is.null(buf)) {
     roi <- sf::st_buffer(roi, buf)
   }
+
   # Intersects
   if (any(class(roi) == "sf")) {
     utm_ae <- sf::st_join(roi, grid)[["UTM"]]
