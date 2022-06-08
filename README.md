@@ -6,7 +6,7 @@ Listed species are arearranged with their conservation and taxonomic status.
 ## website
 
 
-> Package [webite](https://pecard.github.io/tabuleia/index.html).
+> Package [website](https://pecard.github.io/tabuleia/index.html).
 
 ## Disclaimer
 
